@@ -21,9 +21,17 @@ class Usuarios extends Component {
 
   removerUsuario(usuario) {
     if (window.confirm(`Tem certeza que deseja remover "${usuario.nome} ${usuario.sobrenome}"?`)) {
-      let usuarios = this.state.usuarios
-      usuarios = usuarios.filter(x => x.id !== usuario.id)
-      this.setState({ usuarios: usuarios })
+      fetch(`https://reqres.in/api/users/${usuario.id}`, {
+        method:'DELETE'
+      })
+      .then(resposta => {
+        if(resposta.ok){
+          console.log(resposta)
+          let usuarios = this.state.usuarios
+          usuarios = usuarios.filter(x => x.id !== usuario.id)
+          this.setState({ usuarios: usuarios })
+        }
+      })
     }
   }
 
@@ -47,7 +55,7 @@ class Usuarios extends Component {
     fetch('https://reqres.in/api/users')
     .then(resposta => resposta.json())
     .then(dados => {
-      console.log(dados.data)
+      // console.log(dados.data)
 
       const usuarios = dados.data.map(usuario => ({
           id: usuario.id,
@@ -56,7 +64,7 @@ class Usuarios extends Component {
           email: usuario.email
         }))
 
-      console.log(usuarios)
+      // console.log(usuarios)
       this.setState({ usuarios }) //isso é igual a this.setState({ usuarios: usuarios })
     })
 
