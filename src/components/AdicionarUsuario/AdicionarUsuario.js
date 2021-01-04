@@ -70,7 +70,7 @@ class AdicionarUsuario extends Component {
           </div>
           <button type="submit">
             Adicionar
-        </button>
+          </button>
         </form>
       </div>
     )

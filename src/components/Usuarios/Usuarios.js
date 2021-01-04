@@ -8,10 +8,7 @@ class Usuarios extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      usuarios: [
-        { id: 1, nome: 'João', sobrenome: 'Silva', email: 'joao@mail.com' },
-        { id: 2, nome: 'Maria', sobrenome: 'Santos', email: 'maria@mail.com' }
-      ]
+      usuarios: []
     }
 
     this.adicionarUsuario = this.adicionarUsuario.bind(this)
@@ -36,13 +33,34 @@ class Usuarios extends Component {
         <AdicionarUsuario adicionarUsuario={this.adicionarUsuario} />
 
         {this.state.usuarios.map(usuario => (
-          <Usuario key={usuario.id}
+          <Usuario 
+            key={usuario.id}
             usuario={usuario}
             removerUsuario={this.removerUsuario.bind(this, usuario)}
           />
         ))}
       </>
     )
+  }
+
+  componentDidMount() {
+    fetch('https://reqres.in/api/users')
+    .then(resposta => resposta.json())
+    .then(dados => {
+      console.log(dados.data)
+
+      const usuarios = dados.data.map(usuario => ({
+          id: usuario.id,
+          nome: usuario.first_name,
+          sobrenome: usuario.last_name,
+          email: usuario.email
+        }))
+
+      console.log(usuarios)
+      this.setState({ usuarios }) //isso é igual a this.setState({ usuarios: usuarios })
+    })
+
+    
   }
 }
 
